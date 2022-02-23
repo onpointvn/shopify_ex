@@ -7,7 +7,7 @@
 We can create an authorize url using this code:
 
 ```elixir
-ShopifyEx.Session.create_authorize_url(
+ShopifyEx.Auth.create_authorize_url(
   "{your shop name}",
   "{your api key}",
   "{your redirect uri}",
@@ -35,7 +35,7 @@ We call the generated url, accept the authorize request, and receive this follow
 We use this code to get an access token after authorized
 
 ```elixir
-ShopifyEx.Session.request_token(
+ShopifyEx.Auth.request_token(
   "{your shop name}",
   "{your api key}",
   "{your secret api key}",

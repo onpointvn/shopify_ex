@@ -1,4 +1,4 @@
-defmodule ShopifyEx.Session do
+defmodule ShopifyEx.Auth do
   @doc """
   Create an authorization url
 
@@ -64,7 +64,7 @@ defmodule ShopifyEx.Session do
   **Example**
 
   ```
-  iex> Session.request_token(shop, api_key, api_secret_key, code)
+  iex> Auth.request_token(shop, api_key, api_secret_key, code)
     {:ok, "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"}
   ```
 
@@ -75,6 +75,6 @@ defmodule ShopifyEx.Session do
   @spec request_token(String.t(), String.t(), String.t(), String.t()) ::
           {:ok, String.t()} | {:error, String.t()}
   defdelegate request_token(shop, api_key, api_secret_key, code),
-    to: ShopifyEx.Session.RequestTokenAction,
+    to: ShopifyEx.Auth.RequestTokenAction,
     as: :perform
 end

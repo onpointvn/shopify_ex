@@ -1,4 +1,4 @@
-defmodule ShopifyEx.Session.RequestTokenAction do
+defmodule ShopifyEx.Auth.RequestTokenAction do
   @moduledoc """
   Handle requesting Shopify to take access token
   """
