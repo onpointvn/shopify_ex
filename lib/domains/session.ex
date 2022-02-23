@@ -1,4 +1,4 @@
-defmodule ShopifyEx.SessionDomain do
+defmodule ShopifyEx.Session do
   alias ShopifyEx.Client
 
   @doc """
