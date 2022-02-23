@@ -37,7 +37,7 @@ defmodule ShopifyEx.Session do
         |> Enum.map(fn {key, value} -> "#{key}=#{value}" end)
         |> Enum.join("&")
 
-      {:ok, "#{create_shop_url(shop)}/admin/oauth/authorize?#{query_params}"}
+      {:ok, "#{Client.create_endpoint(shop)}/admin/oauth/authorize?#{query_params}"}
     end
   end
 
@@ -50,8 +50,6 @@ defmodule ShopifyEx.Session do
       end
     end)
   end
-
-  defp create_shop_url(shop), do: "https://#{shop}.myshopify.com"
 
   @doc """
   Request Shopify to take access token
@@ -94,8 +92,7 @@ defmodule ShopifyEx.Session do
       code: code
     }
 
-    create_shop_url(shop)
-    |> Client.new(nil, opts)
+    Client.new(shop, nil, opts)
     |> Client.post("/admin/oauth/access_token", payload)
     |> case do
       {:ok, %{status: 200, body: body}} ->

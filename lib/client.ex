@@ -17,7 +17,7 @@ defmodule ShopifyEx.Client do
   """
 
   @spec new(String.t(), String.t() | nil, keyword()) :: Tesla.Client.t()
-  def new(endpoint, access_token, opts \\ []) do
+  def new(shop, access_token, opts \\ []) do
     timeout = Keyword.get(opts, :timeout, 60_000)
     log_request = Keyword.get(opts, :log_request, false)
 
@@ -45,7 +45,7 @@ defmodule ShopifyEx.Client do
     middlewares =
       [
         {Tesla.Middleware.Timeout, timeout: timeout},
-        {Tesla.Middleware.BaseUrl, endpoint},
+        {Tesla.Middleware.BaseUrl, create_endpoint(shop)},
         Tesla.Middleware.JSON
       ] ++ extended_middlewares
 
@@ -56,6 +56,9 @@ defmodule ShopifyEx.Client do
 
     Tesla.client(middlewares, adapter)
   end
+
+  @spec create_endpoint(String.t()) :: String.t()
+  def create_endpoint(shop), do: "https://#{shop}.myshopify.com"
 
   @doc """
   Perform a GET request
