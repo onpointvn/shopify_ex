@@ -2,6 +2,7 @@ defmodule ShopifyEx.Client do
   @moduledoc """
   Define API Client and sending request methods.
   """
+  alias ShopifyEx.Session
 
   @doc """
   Create a new client with shop's endpoint and access token.
@@ -16,18 +17,18 @@ defmodule ShopifyEx.Client do
     https://shopify.dev/api/admin-rest#authentication
   """
 
-  @spec new(String.t(), String.t() | nil, keyword()) :: Tesla.Client.t()
-  def new(shop, access_token, opts \\ []) do
+  @spec new(Session.t(), keyword()) :: Tesla.Client.t()
+  def new(session, opts \\ []) do
     timeout = Keyword.get(opts, :timeout, 60_000)
     log_request = Keyword.get(opts, :log_request, false)
 
     extended_middlewares =
-      if not is_nil(access_token) do
+      if not is_nil(session.access_token) do
         [
           {
             Tesla.Middleware.Headers,
             [
-              {"X-Shopify-Access-Token", "#{access_token}"}
+              {"X-Shopify-Access-Token", session.access_token}
             ]
           }
         ]
@@ -45,7 +46,7 @@ defmodule ShopifyEx.Client do
     middlewares =
       [
         {Tesla.Middleware.Timeout, timeout: timeout},
-        {Tesla.Middleware.BaseUrl, create_endpoint(shop)},
+        {Tesla.Middleware.BaseUrl, create_endpoint(session.shop)},
         Tesla.Middleware.JSON
       ] ++ extended_middlewares
 

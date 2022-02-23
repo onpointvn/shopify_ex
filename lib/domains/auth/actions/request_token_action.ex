@@ -11,7 +11,8 @@ defmodule ShopifyEx.Auth.RequestTokenAction do
       code: code
     }
 
-    Client.new(shop, nil)
+    %ShopifyEx.Session{shop: shop}
+    |> Client.new()
     |> Client.post("/admin/oauth/access_token", payload)
     |> case do
       {:ok, %{status: 200, body: %{"access_token" => access_token}}} ->
