@@ -21,11 +21,30 @@ We call the generated url, accept the authorize request, and receive this follow
 
 ```json
 {
-  "code": "619b5787ca13d8814cde99556b934e62",
-  "hmac": "7fa15cee64622a6c25ebbbb35de99d52bfe6fdf6c09e09099908b6550709b075",
-  "host": "a2hhbmgtb25wb2ludC5teXNob3BpZnkuY29tL2FkbWlu",
-  "shop": "khanh-onpoint.myshopify.com",
-  "state": "cd90f17a03744a0db9e6062d4e74e991",
-  "timestamp": "1645585256"
+  "code": "{your authorization code}",
+  "hmac": "{hmac key}",
+  "host": "{host key}",
+  "shop": "{your shop name}.myshopify.com",
+  "state": "{nonce value}",
+  "timestamp": "{request unix timestamp}"
 }
+```
+
+### Take the access token
+
+We use this code to get an access token after authorized
+
+```elixir
+ShopifyEx.Session.request_token(
+  "{your shop name}",
+  "{your api key}",
+  "{your secret api key}",
+  "{your authorization code}"
+)
+```
+
+After the `request_token` function executed successfully, we receive this value:
+
+```elixir
+{:ok, "{your access token}"}
 ```

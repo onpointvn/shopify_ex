@@ -70,13 +70,7 @@ defmodule ShopifyEx.Session do
 
   ```
   iex> Session.request_token(shop, api_key, api_secret_key, code)
-    {
-      :ok,
-      %{
-        "access_token" => "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",
-        "scope" => "read_orders,read_fulfillments,read_products"
-      }
-    }
+    {:ok, "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"}
   ```
 
   **Reference**
@@ -84,7 +78,7 @@ defmodule ShopifyEx.Session do
     https://shopify.dev/apps/auth/oauth/getting-started#step-5-get-a-permanent-access-token
   """
   @spec request_token(String.t(), String.t(), String.t(), String.t(), keyword()) ::
-          {:ok, map()} | {:error, String.t()}
+          {:ok, String.t()} | {:error, String.t()}
   def request_token(shop, api_key, api_secret_key, code, opts \\ []) do
     payload = %{
       client_id: api_key,
@@ -95,8 +89,8 @@ defmodule ShopifyEx.Session do
     Client.new(shop, nil, opts)
     |> Client.post("/admin/oauth/access_token", payload)
     |> case do
-      {:ok, %{status: 200, body: body}} ->
-        {:ok, body}
+      {:ok, %{status: 200, body: %{"access_token" => access_token}}} ->
+        {:ok, access_token}
 
       {:ok, %{body: body}} ->
         extract_message(body)
