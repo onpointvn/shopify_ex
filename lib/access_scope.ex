@@ -4,7 +4,12 @@ defmodule ShopifyEx.AccessScope do
 
   Reference: https://shopify.dev/api/usage/access-scopes
   """
-  # All orders rather than the default window of 60 days worth of orders
+  @doc """
+  Read all orders rather than the default window of 60 days worth of orders
+
+  Note: to use this scope, we should follow this instruction:
+    https://shopify.dev/apps/auth/oauth/getting-started#orders-permissions
+  """
   def read_all_orders, do: "read_all_orders"
 
   # FulfillmentOrder resources assigned to a location managed by your fulfillment service

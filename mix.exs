@@ -25,11 +25,17 @@ defmodule ShopifyEx.MixProject do
       {:tesla, "~> 1.4"},
       {:hackney, "~> 1.17"},
 
-      # Params validation
+      # Params Validator
       {:tarams, "~> 1.2"},
 
       # UUID Generator
-      {:elixir_uuid, "~> 1.2"}
+      {:elixir_uuid, "~> 1.2"},
+
+      # JSON Parser
+      {:jason, "~> 1.2"},
+
+      # HTML Parser
+      {:floki, "~> 0.32.0"}
     ]
   end
 end

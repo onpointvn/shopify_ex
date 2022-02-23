@@ -7,28 +7,47 @@ defmodule ShopifyEx.Client do
   Create a new client with shop's endpoint and access token.
 
   **Options**
-  - `timeout [integer]`: The timeout for all requests that use the generated client.
+
+    - `timeout [integer]`: The timeout for all requests that use the generated client. Default: 60 seconds.
+    - `log_request [boolean]`: Log all information when calling a request.
 
   **Reference**
+
     https://shopify.dev/api/admin-rest#authentication
   """
-  @spec new(String.t(), String.t()) :: Tesla.Client.t()
+
+  @spec new(String.t(), String.t() | nil, keyword()) :: Tesla.Client.t()
   def new(endpoint, access_token, opts \\ []) do
     timeout = Keyword.get(opts, :timeout, 60_000)
+    log_request = Keyword.get(opts, :log_request, false)
 
-    middlewares = [
-      {Tesla.Middleware.Timeout, timeout: timeout},
-      {Tesla.Middleware.BaseUrl, endpoint},
-      Tesla.Middleware.JSON,
-      {
-        Tesla.Middleware.Headers,
+    extended_middlewares =
+      if not is_nil(access_token) do
         [
-          {"X-Shopify-Access-Token", "#{access_token}"}
+          {
+            Tesla.Middleware.Headers,
+            [
+              {"X-Shopify-Access-Token", "#{access_token}"}
+            ]
+          }
         ]
-      },
-      Tesla.Middleware.JSON,
-      Tesla.Middleware.Logger
-    ]
+      else
+        []
+      end
+
+    extended_middlewares =
+      if log_request == true do
+        [Tesla.Middleware.Logger | extended_middlewares]
+      else
+        extended_middlewares
+      end
+
+    middlewares =
+      [
+        {Tesla.Middleware.Timeout, timeout: timeout},
+        {Tesla.Middleware.BaseUrl, endpoint},
+        Tesla.Middleware.JSON
+      ] ++ extended_middlewares
 
     adapter = {
       Tesla.Adapter.Hackney,
