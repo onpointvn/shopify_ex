@@ -54,7 +54,7 @@ defmodule ShopifyEx.Session do
   defp create_shop_url(shop), do: "https://#{shop}.myshopify.com"
 
   @doc """
-  Request Shopify to get access token
+  Request Shopify to take access token
 
   **Parameters**
 
