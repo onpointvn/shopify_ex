@@ -2,7 +2,11 @@ defmodule ShopifyEx.Session do
   @doc """
   Create authorize url
 
-  Reference https://shopify.dev/apps/auth/oauth/getting-started#step-3-ask-for-permission
+  **Options**
+  - `access_scopes [string]`: The requested access scopes
+
+  **Reference**
+    https://shopify.dev/apps/auth/oauth/getting-started#step-3-ask-for-permission
   """
   @spec create_authorize_url(String.t(), String.t(), String.t(), keyword()) ::
           {:ok, String.t()} | {:error, String.t()}
