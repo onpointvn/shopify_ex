@@ -2,7 +2,7 @@ defmodule ShopifyEx.Product do
   alias Tesla.Client
 
   @doc """
-  Take the product schema for creating/updating a product
+  Take the schema for creating/updating a product
   """
   def product_schema do
     %{
@@ -16,6 +16,9 @@ defmodule ShopifyEx.Product do
     }
   end
 
+  @doc """
+  Take the schema for creating/updating a product variant
+  """
   def product_variant_schema do
     %{
       sku: [type: :string, required: true],
