@@ -4,7 +4,7 @@ defmodule ShopifyEx.Product.ProductStatus do
 
   **Reference**
 
-    https://shopify.dev/api/admin-rest/2022-01/resources/product#resource_object
+  https://shopify.dev/api/admin-rest/2022-01/resources/product#resource_object
   """
   # Ready to sell and availalble for customers
   def active, do: "active"

@@ -1,4 +1,7 @@
 defmodule ShopifyEx.Product.CreateProductAction do
+  @moduledoc """
+  Handle creating a product action
+  """
   alias ShopifyEx.Client
 
   @schema %{
