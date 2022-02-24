@@ -1,34 +1,35 @@
-defmodule ShopifyEx.Client do
+defmodule ShopifyEx.ApiHelper do
   @moduledoc """
   Define API Client and sending request methods.
   """
-  alias ShopifyEx.Session
+  @default_timeout 60_000
 
   @doc """
   Create a new client with shop's endpoint and access token.
 
+  **Parameters**
+
+  - `shop [string]`: The shop name.
+
   **Options**
 
-    - `timeout [integer]`: The timeout for all requests that use the generated client. Default: 60 seconds.
-    - `log_request [boolean]`: Log all information when calling a request.
+  - `access_token [string]`: The OAuth access token.
 
   **Reference**
 
-    https://shopify.dev/api/admin-rest#authentication
+  https://shopify.dev/api/admin-rest#authentication
   """
-
-  @spec new(Session.t(), keyword()) :: Tesla.Client.t()
-  def new(session, opts \\ []) do
-    timeout = Keyword.get(opts, :timeout, 60_000)
-    log_request = Keyword.get(opts, :log_request, false)
+  @spec client(String.t(), keyword()) :: Tesla.Client.t()
+  def client(shop, opts \\ []) do
+    access_token = Keyword.get(opts, :access_token)
 
     extended_middlewares =
-      if not is_nil(session.access_token) do
+      if not is_nil(access_token) do
         [
           {
             Tesla.Middleware.Headers,
             [
-              {"X-Shopify-Access-Token", session.access_token}
+              {"X-Shopify-Access-Token", access_token}
             ]
           }
         ]
@@ -36,23 +37,19 @@ defmodule ShopifyEx.Client do
         []
       end
 
-    extended_middlewares =
-      if log_request == true do
-        [Tesla.Middleware.Logger | extended_middlewares]
-      else
-        extended_middlewares
-      end
+    # TODO: Need define the configuration to configure log request, and timeout
+    extended_middlewares = [Tesla.Middleware.Logger | extended_middlewares]
 
     middlewares =
       [
-        {Tesla.Middleware.Timeout, timeout: timeout},
-        {Tesla.Middleware.BaseUrl, create_endpoint(session.shop)},
+        {Tesla.Middleware.Timeout, timeout: @default_timeout},
+        {Tesla.Middleware.BaseUrl, create_endpoint(shop)},
         Tesla.Middleware.JSON
       ] ++ extended_middlewares
 
     adapter = {
       Tesla.Adapter.Hackney,
-      recv_timeout: timeout, connect_timeout: timeout
+      recv_timeout: @default_timeout, connect_timeout: @default_timeout
     }
 
     Tesla.client(middlewares, adapter)

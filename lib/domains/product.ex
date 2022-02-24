@@ -1,16 +1,40 @@
 defmodule ShopifyEx.Product do
+  alias Tesla.Client
+
+  @doc """
+  Take the product schema for creating/updating a product
+  """
+  def product_schema do
+    %{
+      body_html: :string,
+      vendor: :string,
+      product_type: :string,
+      status: [type: :string, in: ShopifyEx.Product.ProductStatus.enum()],
+      tags: {:array, :string},
+      title: [type: :string, required: true],
+      variants: {:array, product_variant_schema()}
+    }
+  end
+
+  def product_variant_schema do
+    %{
+      sku: [type: :string, required: true],
+      barcode: :string
+    }
+  end
+
   @doc """
   Create a product
 
   **Parameters**
 
-  - `session [Session]`: the request session.
+  - `client [Tesla.Client]`: the request client.
   - `params [map]`: the product object parameters.
 
   **Example**
 
   ```
-  iex> Product.create_product(session, params)
+  iex> Product.create_product(client, params)
     {
       :ok,
       %{
@@ -77,8 +101,8 @@ defmodule ShopifyEx.Product do
 
   https://shopify.dev/api/admin-rest/2022-01/resources/product#[post]/admin/api/2022-01/products.json
   """
-  @spec create_product(ShopifyEx.Session.t(), map()) :: {:error, binary() | map()} | {:ok, map()}
-  defdelegate create_product(session, params),
+  @spec create_product(Client.t(), map()) :: {:ok, map()} | {:error, binary() | map()}
+  defdelegate create_product(client, params),
     to: ShopifyEx.Product.CreateProductAction,
     as: :perform
 
@@ -87,13 +111,13 @@ defmodule ShopifyEx.Product do
 
   **Parameters**
 
-  - `session [Session]`: the request session.
+  - `client [Tesla.Client]`: the request client.
   - `params [map]`: the filter parameters.
 
   **Example**
 
   ```
-  iex> Product.list_products(session, params)
+  iex> Product.list_products(client, params)
     {
       :ok,
       %{
@@ -161,10 +185,11 @@ defmodule ShopifyEx.Product do
   ```
 
   **Reference**
+
   https://shopify.dev/api/admin-rest/2022-01/resources/product#get-products
   """
-  @spec list_products(ShopifyEx.Session.t(), map()) :: {:error, binary() | map()} | {:ok, map()}
-  defdelegate list_products(session, params \\ %{}),
+  @spec list_products(Client.t(), map()) :: {:ok, map()} | {:error, binary() | map()}
+  defdelegate list_products(client, params \\ %{}),
     to: ShopifyEx.Product.ListProductsAction,
     as: :perform
 end

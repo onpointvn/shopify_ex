@@ -35,7 +35,7 @@ defmodule ShopifyEx.Auth do
         |> Enum.map(fn {key, value} -> "#{key}=#{value}" end)
         |> Enum.join("&")
 
-      endpoint = ShopifyEx.Client.create_endpoint(shop)
+      endpoint = ShopifyEx.ApiHelper.create_endpoint(shop)
 
       {:ok, "#{endpoint}/admin/oauth/authorize?#{query_params}"}
     end

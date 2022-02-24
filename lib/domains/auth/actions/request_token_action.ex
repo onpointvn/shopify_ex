@@ -2,7 +2,7 @@ defmodule ShopifyEx.Auth.RequestTokenAction do
   @moduledoc """
   Handle requesting Shopify to take access token
   """
-  alias ShopifyEx.Client
+  alias ShopifyEx.ApiHelper
 
   def perform(shop, api_key, api_secret_key, code) do
     payload = %{
@@ -11,9 +11,8 @@ defmodule ShopifyEx.Auth.RequestTokenAction do
       code: code
     }
 
-    %ShopifyEx.Session{shop: shop}
-    |> Client.new()
-    |> Client.post("/admin/oauth/access_token", payload)
+    ApiHelper.client(shop)
+    |> ApiHelper.post("/admin/oauth/access_token", payload)
     |> case do
       {:ok, %{status: 200, body: %{"access_token" => access_token}}} ->
         {:ok, access_token}
