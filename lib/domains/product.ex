@@ -2,31 +2,6 @@ defmodule ShopifyEx.Product do
   alias Tesla.Client
 
   @doc """
-  Take the schema for creating/updating a product
-  """
-  def product_schema do
-    %{
-      body_html: :string,
-      vendor: :string,
-      product_type: :string,
-      status: [type: :string, in: ShopifyEx.Product.ProductStatus.enum()],
-      tags: {:array, :string},
-      title: [type: :string, required: true],
-      variants: {:array, product_variant_schema()}
-    }
-  end
-
-  @doc """
-  Take the schema for creating/updating a product variant
-  """
-  def product_variant_schema do
-    %{
-      sku: [type: :string, required: true],
-      barcode: :string
-    }
-  end
-
-  @doc """
   Create a product
 
   **Parameters**

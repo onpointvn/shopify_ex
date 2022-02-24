@@ -2,8 +2,17 @@ defmodule ShopifyEx.Product.CreateProductAction do
   @moduledoc """
   Handle creating a product action
   """
+  @variant_schema %{
+    sku: [type: :string, required: true]
+  }
+
+  @schema %{
+    title: [type: :string, required: true],
+    variants: {:array, @variant_schema}
+  }
+
   def perform(client, params) do
-    with {:ok, request_params} <- Tarams.cast(params, ShopifyEx.Product.product_schema()),
+    with {:ok, request_params} <- Tarams.cast(params, @schema),
          request_params <- ShopifyEx.MapHelper.clean_nil(request_params),
          {:ok, data} <- execute_request(client, request_params) do
       {:ok, data}
