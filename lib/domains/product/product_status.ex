@@ -1,4 +1,4 @@
-defmodule ShopifyEx.ProductStatus do
+defmodule ShopifyEx.Product.ProductStatus do
   @moduledoc """
   Product status enumeration
 

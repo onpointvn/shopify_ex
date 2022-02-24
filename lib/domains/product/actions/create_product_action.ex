@@ -6,7 +6,7 @@ defmodule ShopifyEx.Product.CreateProductAction do
     body_html: :string,
     vendor: :string,
     product_type: :string,
-    status: [type: :string, in: ShopifyEx.ProductStatus.enum()],
+    status: [type: :string, in: ShopifyEx.Product.ProductStatus.enum()],
     tags: {:array, :string}
   }
 
