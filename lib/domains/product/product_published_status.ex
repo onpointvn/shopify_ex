@@ -6,7 +6,6 @@ defmodule ShopifyEx.Product.ProductPublishedStatus do
 
   https://shopify.dev/api/admin-rest/2022-01/resources/product#get-products
   """
-  def any, do: "any"
 
   def published, do: "published"
 
@@ -14,7 +13,6 @@ defmodule ShopifyEx.Product.ProductPublishedStatus do
 
   def enum,
     do: [
-      any(),
       published(),
       unpublished()
     ]
