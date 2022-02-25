@@ -7,8 +7,8 @@ defmodule ShopifyEx.Order.CreateFulfillmentAction do
   https://shopify.dev/api/admin-rest/2022-01/resources/fulfillment#post-orders-order-id-fulfillments
   """
   @schema %{
-            # location_id: :integer
-          }
+    location_id: [type: :integer, required: true]
+  }
   def perform(client, order_id, params) do
     with {:ok, request_params} <- Tarams.cast(params, @schema) do
       request_params = ShopifyEx.MapHelper.clean_nil(request_params)

@@ -2,7 +2,7 @@ defmodule ShopifyEx.Location do
   alias Tesla.Client
 
   @moduledoc """
-  Retrieve a single location
+  Retrieve a location
 
   **Reference**
 
