@@ -8,17 +8,8 @@ defmodule ShopifyEx.Order.CancelOrderAction do
   """
 
   def perform(client, order_id) do
-    execute_request(client, order_id)
-  end
-
-  defp execute_request(client, order_id) do
-    api_version = ShopifyEx.get_api_version()
-
     client
-    |> ShopifyEx.ApiHelper.post(
-      "/admin/api/#{api_version}/orders/#{order_id}/cancel.json",
-      %{}
-    )
+    |> ShopifyEx.ApiHelper.post("/orders/#{order_id}/cancel.json", %{})
     |> case do
       {:ok, %{status: 200, body: %{"order" => order}}} ->
         {:ok, order}

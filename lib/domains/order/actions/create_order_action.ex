@@ -16,31 +16,21 @@ defmodule ShopifyEx.Order.CreateOrderAction do
   }
 
   def perform(client, params) do
-    with {:ok, request_params} <- Tarams.cast(params, @schema),
-         request_params <- ShopifyEx.MapHelper.clean_nil(request_params),
-         {:ok, order} <- execute_request(client, request_params) do
-      {:ok, order}
-    end
-  end
+    with {:ok, request_params} <- Tarams.cast(params, @schema) do
+      request_params = ShopifyEx.MapHelper.clean_nil(request_params)
 
-  defp execute_request(client, params) do
-    api_version = ShopifyEx.get_api_version()
+      client
+      |> ShopifyEx.ApiHelper.post("/orders.json", %{order: request_params})
+      |> case do
+        {:ok, %{status: 201, body: %{"order" => order}}} ->
+          {:ok, order}
 
-    request_params = %{
-      order: params
-    }
+        {:ok, %{body: body}} ->
+          {:error, body}
 
-    client
-    |> ShopifyEx.ApiHelper.post("/admin/api/#{api_version}/orders.json", request_params)
-    |> case do
-      {:ok, %{status: 201, body: %{"order" => order}}} ->
-        {:ok, order}
-
-      {:ok, %{body: body}} ->
-        {:error, body}
-
-      _error ->
-        {:error, "Something went wrong"}
+        _error ->
+          {:error, "Something went wrong"}
+      end
     end
   end
 end

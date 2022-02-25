@@ -7,6 +7,7 @@ defmodule ShopifyEx.Product.RetrieveProductsAction do
   https://shopify.dev/api/admin-rest/2022-01/resources/product#get-products
   """
   alias ShopifyEx.Constant
+  alias ShopifyEx.MapHelper
 
   @published_statuses [Constant.any_value() | ShopifyEx.Product.ProductPublishedStatus.enum()]
 
@@ -29,27 +30,23 @@ defmodule ShopifyEx.Product.RetrieveProductsAction do
 
   def perform(client, params \\ %{}) do
     with {:ok, request_params} <- Tarams.cast(params, @schema) do
-      request_params = ShopifyEx.MapHelper.clean_nil(request_params)
-      execute_request(client, request_params)
-    end
-  end
+      request_params =
+        request_params
+        |> MapHelper.clean_nil()
+        |> MapHelper.to_get_request_query()
 
-  defp execute_request(client, params) do
-    api_version = ShopifyEx.get_api_version()
+      client
+      |> ShopifyEx.ApiHelper.get("/products.json", query: request_params)
+      |> case do
+        {:ok, %{status: 200, body: %{"products" => products}}} ->
+          {:ok, products}
 
-    params = ShopifyEx.MapHelper.to_get_request_query(params)
+        {:ok, %{body: body}} ->
+          {:error, body}
 
-    client
-    |> ShopifyEx.ApiHelper.get("/admin/api/#{api_version}/products.json", query: params)
-    |> case do
-      {:ok, %{status: 200, body: %{"products" => products}}} ->
-        {:ok, products}
-
-      {:ok, %{body: body}} ->
-        {:error, body}
-
-      _error ->
-        {:error, "Something went wrong"}
+        _error ->
+          {:error, "Something went wrong"}
+      end
     end
   end
 end

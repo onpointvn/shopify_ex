@@ -21,6 +21,7 @@ defmodule ShopifyEx.ApiHelper do
   """
   @spec client(String.t(), keyword()) :: Tesla.Client.t()
   def client(shop, opts \\ []) do
+    api_version = ShopifyEx.get_api_version()
     access_token = Keyword.get(opts, :access_token)
 
     extended_middlewares =
@@ -40,10 +41,19 @@ defmodule ShopifyEx.ApiHelper do
     # TODO: Need define the configuration to configure log request, and timeout
     extended_middlewares = [Tesla.Middleware.Logger | extended_middlewares]
 
+    endpoint = create_endpoint(shop)
+
+    endpoint =
+      if not is_nil(access_token) do
+        "#{endpoint}/admin/api/#{api_version}"
+      else
+        endpoint
+      end
+
     middlewares =
       [
         {Tesla.Middleware.Timeout, timeout: @default_timeout},
-        {Tesla.Middleware.BaseUrl, create_endpoint(shop)},
+        {Tesla.Middleware.BaseUrl, endpoint},
         Tesla.Middleware.JSON
       ] ++ extended_middlewares
 

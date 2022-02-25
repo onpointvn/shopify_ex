@@ -7,10 +7,8 @@ defmodule ShopifyEx.Order.RetrieveOrderAction do
   https://shopify.dev/api/admin-rest/2022-01/resources/order#get-orders-order-id
   """
   def perform(client, order_id) do
-    api_version = ShopifyEx.get_api_version()
-
     client
-    |> ShopifyEx.ApiHelper.get("/admin/api/#{api_version}/orders/#{order_id}.json")
+    |> ShopifyEx.ApiHelper.get("/orders/#{order_id}.json")
     |> case do
       {:ok, %{status: 200, body: %{"order" => order}}} ->
         {:ok, order}

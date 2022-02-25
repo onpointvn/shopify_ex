@@ -12,31 +12,22 @@ defmodule ShopifyEx.Order.CreateFulfillmentAction do
   def perform(client, order_id, params) do
     with {:ok, request_params} <- Tarams.cast(params, @schema) do
       request_params = ShopifyEx.MapHelper.clean_nil(request_params)
-      execute_request(client, order_id, request_params)
-    end
-  end
 
-  defp execute_request(client, order_id, params) do
-    api_version = ShopifyEx.get_api_version()
+      client
+      |> ShopifyEx.ApiHelper.post(
+        "/orders/#{order_id}/fulfillments.json",
+        %{fulfillment: request_params}
+      )
+      |> case do
+        {:ok, %{status: 201, body: %{"fulfillment" => fulfillment}}} ->
+          {:ok, fulfillment}
 
-    request_params = %{
-      order: params
-    }
+        {:ok, %{body: body}} ->
+          {:error, body}
 
-    client
-    |> ShopifyEx.ApiHelper.post(
-      "/admin/api/#{api_version}/orders/#{order_id}/fulfillments.json",
-      request_params
-    )
-    |> case do
-      {:ok, %{status: 201, body: %{"fulfillment" => fulfillment}}} ->
-        {:ok, fulfillment}
-
-      {:ok, %{body: body}} ->
-        {:error, body}
-
-      _error ->
-        {:error, "Something went wrong"}
+        _error ->
+          {:error, "Something went wrong"}
+      end
     end
   end
 end
