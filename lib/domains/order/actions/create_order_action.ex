@@ -1,6 +1,10 @@
 defmodule ShopifyEx.Order.CreateOrderAction do
   @moduledoc """
-  Handle creating an order action
+  Create an order
+
+  **Reference**
+
+  https://shopify.dev/api/admin-rest/2022-01/resources/order#post-orders
   """
   @line_item_schema %{
     variant_id: [type: :integer, required: true],
