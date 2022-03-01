@@ -1,4 +1,4 @@
-defmodule ShopifyEx.Order.FulfillmentStatus do
+defmodule ShopifyEx.Order.OrderFulfillmentStatus do
   @moduledoc """
   Order fulfillment status enumeration
 

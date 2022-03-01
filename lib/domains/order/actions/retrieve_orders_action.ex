@@ -11,7 +11,7 @@ defmodule ShopifyEx.Order.RetrieveOrdersAction do
 
   @financial_statuses [Constant.any_value() | ShopifyEx.Order.FinancialStatus.enum()]
 
-  @fulfillment_statuses [Constant.any_value() | ShopifyEx.Order.FulfillmentStatus.enum()]
+  @fulfillment_statuses [Constant.any_value() | ShopifyEx.Order.OrderFulfillmentStatus.enum()]
 
   @statuses [Constant.any_value() | ShopifyEx.Order.OrderStatus.enum()]
 
