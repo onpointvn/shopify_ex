@@ -14,6 +14,7 @@ defmodule ShopifyEx.ApiHelper do
   **Options**
 
   - `access_token [string]`: The OAuth access token.
+  - `domain [string]`: The shop domain.
 
   **Reference**
 
@@ -41,8 +42,12 @@ defmodule ShopifyEx.ApiHelper do
     # TODO: Need define the configuration to configure log request, and timeout
     extended_middlewares = [Tesla.Middleware.Logger | extended_middlewares]
 
-    endpoint = create_endpoint(shop)
+    domain = Keyword.get(opts, :domain)
 
+    # Build enpoint from domain
+    endpoint = create_endpoint(shop, domain)
+
+    # Build endpoint with API access token
     endpoint =
       if not is_nil(access_token) do
         "#{endpoint}/admin/api/#{api_version}"
@@ -65,8 +70,14 @@ defmodule ShopifyEx.ApiHelper do
     Tesla.client(middlewares, adapter)
   end
 
-  @spec create_endpoint(String.t()) :: String.t()
-  def create_endpoint(shop), do: "https://#{shop}.myshopify.com"
+  @spec create_endpoint(String.t(), String.t() | nil) :: String.t()
+  def create_endpoint(shop, domain \\ nil) do
+    if domain do
+      "https://#{domain}"
+    else
+      "https://#{shop}.myshopify.com"
+    end
+  end
 
   @doc """
   Perform a GET request

@@ -11,6 +11,7 @@ defmodule ShopifyEx.Auth do
   **Options**
 
     - `access_scopes [{:array, string}]`: The requested access scopes
+    - `domain [string]: The shop domain.
 
   **Reference**
 
@@ -20,6 +21,7 @@ defmodule ShopifyEx.Auth do
           {:ok, String.t()} | {:error, String.t()}
   def create_authorize_url(shop, api_key, redirect_uri, opts \\ []) do
     access_scopes = Keyword.get(opts, :access_scopes, [])
+    domain = Keyword.get(opts, :domain)
 
     with :ok <- validate_access_scopes(access_scopes) do
       access_scopes = Enum.join(access_scopes, ",")
@@ -35,7 +37,7 @@ defmodule ShopifyEx.Auth do
         |> Enum.map(fn {key, value} -> "#{key}=#{value}" end)
         |> Enum.join("&")
 
-      endpoint = ShopifyEx.ApiHelper.create_endpoint(shop)
+      endpoint = ShopifyEx.ApiHelper.create_endpoint(shop, domain)
 
       {:ok, "#{endpoint}/admin/oauth/authorize?#{query_params}"}
     end
