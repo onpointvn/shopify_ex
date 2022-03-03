@@ -29,8 +29,8 @@ defmodule ShopifyEx.Auth do
         [
           {"client_id", api_key},
           {"scope", access_scopes},
-          {"redirect_uri", redirect_uri},
-          {"state", nonce}
+          {"state", nonce},
+          {"redirect_uri", redirect_uri}
         ]
         |> Enum.map(fn {key, value} -> "#{key}=#{value}" end)
         |> Enum.join("&")
