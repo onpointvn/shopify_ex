@@ -29,7 +29,8 @@ defmodule ShopifyEx.Order.RetrieveOrdersAction do
     status: [type: :string, in: @statuses],
     updated_at_max: :utc_datetime,
     updated_at_min: :utc_datetime,
-    page_info: :string
+    page_info: :string,
+    order: [type: :string, format: ~r/([[A-Z]|[a-z]|[0-9]|_)+ ((asc)|(desc))+/]
   }
   def perform(client, params \\ %{}) do
     with {:ok, request_params} <- Tarams.cast(params, @schema),

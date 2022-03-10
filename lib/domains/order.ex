@@ -187,8 +187,9 @@ defmodule ShopifyEx.Order do
 
   **Note**
 
-  Status cannot be passed when page_info is present.
+  When `page_info` or `order` is present, filtering data cannot be passed.
 
+  order
   **Reference**
 
   https://shopify.dev/api/admin-rest/2022-01/resources/order#get-orders
