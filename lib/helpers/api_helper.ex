@@ -105,4 +105,36 @@ defmodule ShopifyEx.ApiHelper do
   def post(client, path, body, opts \\ []) do
     Tesla.post(client, path, body, [{:opts, [api_name: path]} | opts])
   end
+
+  @doc """
+  Extract pagination information from header
+
+  **Reference**
+
+  https://shopify.dev/api/usage/pagination-rest
+  """
+  @spec extract_page_info(Tesla.Env.t()) :: map()
+  def extract_page_info(%{headers: headers}) do
+    headers
+    |> Enum.filter(fn {key, _} -> key == "link" end)
+    |> Enum.map(fn {_, value} -> value end)
+    |> List.first()
+    |> Kernel.||("")
+    |> String.split(", ")
+    |> Enum.map(fn link_item ->
+      rel =
+        link_item
+        |> String.replace(~r/.*rel=/, "")
+        |> String.replace("\"", "")
+
+      page_info =
+        link_item
+        |> String.replace(~r/.*page_info=/, "")
+        |> String.replace(~r/>;.*/, "")
+
+      {rel, page_info}
+    end)
+    |> Enum.filter(fn {key, _} -> String.trim(key) != "" end)
+    |> Enum.into(%{}, fn {key, value} -> {String.to_atom(key), value} end)
+  end
 end
