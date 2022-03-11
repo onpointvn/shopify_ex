@@ -103,65 +103,71 @@ defmodule ShopifyEx.Product do
   iex> Product.list_products(client, params)
     {
       :ok,
-      [
-        %{
-          "admin_graphql_api_id" => "gid://shopify/Product/7581305176309",
-          "body_html" => nil,
-          "created_at" => "2022-02-23T17:40:20+07:00",
-          "handle" => "burton-custom-freestyle-151",
-          "id" => 7581305176309,
-          "image" => nil,
-          "images" => [],
-          "options" => [
-            %{
-              "id" => 9661636837621,
-              "name" => "Title",
-              "position" => 1,
-              "product_id" => 7581305176309,
-              "values" => ["Default Title"]
-            }
-          ],
-          "product_type" => "",
-          "published_at" => "2022-02-23T17:40:20+07:00",
-          "published_scope" => "web",
-          "status" => "active",
-          "tags" => "",
-          "template_suffix" => nil,
-          "title" => "Burton Custom Freestyle 151",
-          "updated_at" => "2022-02-23T17:40:20+07:00",
-          "variants" => [
-            %{
-              "admin_graphql_api_id" => "gid://shopify/ProductVariant/42440609530101",
-              "barcode" => nil,
-              "compare_at_price" => nil,
-              "created_at" => "2022-02-23T17:40:20+07:00",
-              "fulfillment_service" => "manual",
-              "grams" => 0,
-              "id" => 42440609530101,
-              "image_id" => nil,
-              "inventory_item_id" => 44534866870517,
-              "inventory_management" => nil,
-              "inventory_policy" => "deny",
-              "inventory_quantity" => 0,
-              "old_inventory_quantity" => 0,
-              "option1" => "Default Title",
-              "option2" => nil,
-              "option3" => nil,
-              "position" => 1,
-              "price" => "0",
-              "product_id" => 7581305176309,
-              "requires_shipping" => true,
-              "sku" => "",
-              "taxable" => true,
-              "title" => "Default Title",
-              "updated_at" => "2022-02-23T17:40:20+07:00",
-              "weight" => 0.0,
-              "weight_unit" => "kg"
-            }
-          ],
-          "vendor" => "Khanh OnPoint"
+      %{
+        products: [
+          %{
+            "admin_graphql_api_id" => "gid://shopify/Product/7581305176309",
+            "body_html" => nil,
+            "created_at" => "2022-02-23T17:40:20+07:00",
+            "handle" => "burton-custom-freestyle-151",
+            "id" => 7581305176309,
+            "image" => nil,
+            "images" => [],
+            "options" => [
+              %{
+                "id" => 9661636837621,
+                "name" => "Title",
+                "position" => 1,
+                "product_id" => 7581305176309,
+                "values" => ["Default Title"]
+              }
+            ],
+            "product_type" => "",
+            "published_at" => "2022-02-23T17:40:20+07:00",
+            "published_scope" => "web",
+            "status" => "active",
+            "tags" => "",
+            "template_suffix" => nil,
+            "title" => "Burton Custom Freestyle 151",
+            "updated_at" => "2022-02-23T17:40:20+07:00",
+            "variants" => [
+              %{
+                "admin_graphql_api_id" => "gid://shopify/ProductVariant/42440609530101",
+                "barcode" => nil,
+                "compare_at_price" => nil,
+                "created_at" => "2022-02-23T17:40:20+07:00",
+                "fulfillment_service" => "manual",
+                "grams" => 0,
+                "id" => 42440609530101,
+                "image_id" => nil,
+                "inventory_item_id" => 44534866870517,
+                "inventory_management" => nil,
+                "inventory_policy" => "deny",
+                "inventory_quantity" => 0,
+                "old_inventory_quantity" => 0,
+                "option1" => "Default Title",
+                "option2" => nil,
+                "option3" => nil,
+                "position" => 1,
+                "price" => "0",
+                "product_id" => 7581305176309,
+                "requires_shipping" => true,
+                "sku" => "",
+                "taxable" => true,
+                "title" => "Default Title",
+                "updated_at" => "2022-02-23T17:40:20+07:00",
+                "weight" => 0.0,
+                "weight_unit" => "kg"
+              }
+            ],
+            "vendor" => "Khanh OnPoint"
+          }
+        ],
+         page_info: %{
+          next: "eyJkaXJlY3Rpb24iOiJuZXh0IiwibGFzdF9pZCI6NDY3MTQ4MzExNzgxMywibGFzdF92YWx1ZSI6IjIwMjItMDMtMDEgMTA6MTA6MzIuMTUxMDg0In0",
+          previous: "eyJkaXJlY3Rpb24iOiJwcmV2IiwibGFzdF9pZCI6NDY3MTQ4MzExNzgxMywibGFzdF92YWx1ZSI6IjIwMjItMDMtMDEgMTA6MTA6MzIuMTUxMDg0In0"
         }
-      ]
+      }
     }
   ```
   """
