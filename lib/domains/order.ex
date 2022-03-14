@@ -700,7 +700,7 @@ defmodule ShopifyEx.Order do
   """
   @spec create_fulfillment(Client.t(), integer(), map()) ::
           {:ok, map()} | {:error, binary() | map()}
-  defdelegate create_fulfillment(client, order_id, params),
+  defdelegate create_fulfillment(client, order_id, params \\ %{}),
     to: ShopifyEx.Order.CreateFulfillmentAction,
     as: :perform
 
