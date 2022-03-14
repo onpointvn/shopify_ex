@@ -31,7 +31,7 @@ defmodule ShopifyEx.Order.CreateFulfillmentAction do
     tracking_numbers: {:array, :string},
     tracking_urls: {:array, :string}
   }
-  def perform(client, order_id, params \\ %{}) do
+  def perform(client, order_id, params) do
     with {:ok, request_params} <- Tarams.cast(params, @schema) do
       request_params = ShopifyEx.MapHelper.clean_nil(request_params)
 
