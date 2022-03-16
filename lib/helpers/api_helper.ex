@@ -82,8 +82,6 @@ defmodule ShopifyEx.ApiHelper do
   @doc """
   Perform a GET request
 
-      get("/users")
-      get("/users", query: [scope: "admin"])
       get(client, "/users")
       get(client, "/users", query: [scope: "admin"])
       get(client, "/users", body: %{name: "Jon"})
@@ -96,14 +94,22 @@ defmodule ShopifyEx.ApiHelper do
   @doc """
   Perform a POST request
 
-      post("/users", %{name: "Jon"})
-      post("/users", %{name: "Jon"}, query: [scope: "admin"])
       post(client, "/users", %{name: "Jon"})
       post(client, "/users", %{name: "Jon"}, query: [scope: "admin"])
   """
   @spec post(Tesla.Client.t(), String.t(), map(), keyword()) :: {:ok, any()} | {:error, any()}
   def post(client, path, body, opts \\ []) do
     Tesla.post(client, path, body, [{:opts, [api_name: path]} | opts])
+  end
+
+  @doc """
+  Perform a PUT request
+
+      put(client, "/users", %{name: "Jon"})
+      put(client, "/users", %{name: "Jon"}, query: [scope: "admin"])
+  """
+  def put(client, path, body, opts \\ []) do
+    Tesla.put(client, path, body, [{:opts, [api_name: path]} | opts])
   end
 
   @doc """
