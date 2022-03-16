@@ -8,11 +8,14 @@ defmodule ShopifyEx.Fulfillment.UpdateTrackingAction do
   """
   @schema %{
     notify_customer: :boolean,
-    tracking_info: %{
-      number: [type: :string, required: true],
-      company: [type: :string, required: true],
-      url: [type: :string]
-    }
+    tracking_info: [
+      type: %{
+        number: [type: :string, required: true],
+        company: [type: :string, required: true],
+        url: [type: :string]
+      },
+      required: true
+    ]
   }
   def perform(client, fulfillment_id, params) do
     with {:ok, request_params} <- Tarams.cast(params, @schema),
