@@ -168,4 +168,31 @@ defmodule ShopifyEx.Fulfillment do
   defdelegate update_fulfillment_tracking(client, fulfillment_id, params),
     to: ShopifyEx.Fulfillment.UpdateTrackingAction,
     as: :perform
+
+  @doc """
+  Update a fulfillment of an order
+
+  **Reference**
+
+  https://shopify.dev/api/admin-rest/2022-01/resources/fulfillment#put-orders-order-id-fulfillments-fulfillment-id
+  """
+  @spec update_fulfillment(Client.t(), integer(), integer(), map()) ::
+          {:ok, map()} | {:error, binary() | map()}
+  defdelegate update_fulfillment(client, order_id, fulfillment_id, params),
+    to: ShopifyEx.Fulfillment.UpdateFulfillmentAction,
+    as: :perform
+
+  @doc """
+  Update a fulfillment of an order
+
+  **Reference**
+
+  https://community.shopify.com/c/shopify-apis-and-sdks/how-to-update-the-order-status-through-the-api-along-with/td-p/540032
+  https://shopify.dev/api/admin-rest/2022-01/resources/fulfillmentevent#post-orders-order-id-fulfillments-fulfillment-id-events
+  """
+  @spec create_fulfillment_event(Client.t(), integer(), integer(), map()) ::
+          {:ok, map()} | {:error, binary() | map()}
+  defdelegate create_fulfillment_event(client, order_id, fulfillment_id, params),
+    to: ShopifyEx.Fulfillment.CreateFulfillmentEventAction,
+    as: :perform
 end

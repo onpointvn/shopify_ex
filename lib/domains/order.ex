@@ -790,17 +790,4 @@ defmodule ShopifyEx.Order do
   defdelegate retrieve_fulfillments(client, order_id, params \\ %{}),
     to: ShopifyEx.Order.RetrieveFulfillmentsAction,
     as: :perform
-
-  @doc """
-  Update a fulfillment of an order
-
-  **Reference**
-
-  https://shopify.dev/api/admin-rest/2022-01/resources/fulfillment#put-orders-order-id-fulfillments-fulfillment-id
-  """
-  @spec update_fulfillment(Client.t(), integer(), integer(), map()) ::
-          {:ok, map()} | {:error, binary() | map()}
-  defdelegate update_fulfillment(client, order_id, fulfillment_id, params),
-    to: ShopifyEx.Order.UpdateFulfillmentAction,
-    as: :perform
 end
