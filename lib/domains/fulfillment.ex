@@ -1,7 +1,7 @@
 defmodule ShopifyEx.Fulfillment do
   alias Tesla.Client
 
-  @moduledoc """
+  @doc """
   Cancel a fulfillment
 
   **Reference**
@@ -154,5 +154,18 @@ defmodule ShopifyEx.Fulfillment do
   @spec cancel_fulfillment(Client.t(), integer()) :: {:ok, map()} | {:error, binary() | map()}
   defdelegate cancel_fulfillment(client, fulfillment_id),
     to: ShopifyEx.Fulfillment.CancelFulfillmentAction,
+    as: :perform
+
+  @doc """
+  Update tracking information for a fulfillment
+
+  **Reference**
+
+  https://shopify.dev/api/admin-rest/2022-01/resources/fulfillment#post-fulfillments-fulfillment-id-update-tracking
+  """
+  @spec update_fulfillment_tracking(Client.t(), integer(), map()) ::
+          {:ok, map()} | {:error, binary() | map()}
+  defdelegate update_fulfillment_tracking(client, fulfillment_id, params),
+    to: ShopifyEx.Fulfillment.UpdateTrackingAction,
     as: :perform
 end
