@@ -7,7 +7,7 @@ defmodule ShopifyEx.Order.UpdateFulfillmentAction do
   https://shopify.dev/api/admin-rest/2022-01/resources/fulfillment#put-orders-order-id-fulfillments-fulfillment-id
   """
   @schema %{
-    shipment_status: ShopifyEx.Fulfillment.ShipmentStatus.enum(),
+    shipment_status: [type: :string, in: ShopifyEx.Fulfillment.ShipmentStatus.enum()],
     tracking_number: :string
   }
   def perform(client, order_id, fulfillment_id, params) do
