@@ -1,4 +1,4 @@
-defmodule ShopifyEx.Location.RetrieveLocationAction do
+defmodule ShopifyEx.Inventory.RetrieveLocationAction do
   @moduledoc """
   Retrieve a location
 
