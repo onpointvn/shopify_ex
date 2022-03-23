@@ -27,3 +27,6 @@ shopify_ex-*.tar
 
 # ElixirLS
 .elixir_ls
+
+# Dependencies lock
+mix.lock
