@@ -14,7 +14,7 @@ defmodule ShopifyEx.Inventory.AdjustInventoryLevelAction do
   def perform(client, params) do
     with {:ok, request_params} <- Tarams.cast(params, @schema),
          {:ok, %{status: 200, body: %{"inventory_level" => inventory_level}}} <-
-           ShopifyEx.ApiHelper.post(client, "/inventory_levels/adjust.json.json", request_params) do
+           ShopifyEx.ApiHelper.post(client, "/inventory_levels/adjust.json", request_params) do
       {:ok, inventory_level}
     else
       {:ok, %{body: body}} ->
