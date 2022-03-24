@@ -334,7 +334,8 @@ defmodule ShopifyEx.Order do
     }
   ```
   """
-  @spec retrieve_orders(Client.t(), map()) :: {:ok, list(map())} | {:error, binary() | map()}
+  @spec retrieve_orders(Client.t(), map()) ::
+          {:ok, %{orders: list(map()), page_info: map()}} | {:error, binary() | map()}
   defdelegate retrieve_orders(client, params \\ %{}),
     to: ShopifyEx.Order.RetrieveOrdersAction,
     as: :perform

@@ -171,7 +171,8 @@ defmodule ShopifyEx.Product do
     }
   ```
   """
-  @spec retrieve_products(Client.t(), map()) :: {:ok, list(map())} | {:error, binary() | map()}
+  @spec retrieve_products(Client.t(), map()) ::
+          {:ok, %{products: list(map()), page_info: map()}} | {:error, binary() | map()}
   defdelegate retrieve_products(client, params \\ %{}),
     to: ShopifyEx.Product.RetrieveProductsAction,
     as: :perform
