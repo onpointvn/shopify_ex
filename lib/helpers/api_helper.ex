@@ -25,6 +25,7 @@ defmodule ShopifyEx.ApiHelper do
     api_version = ShopifyEx.get_api_version()
     access_token = Keyword.get(opts, :access_token)
 
+    # TODO: Need define the configuration to configure log request, and timeout
     extended_middlewares =
       if not is_nil(access_token) do
         [
@@ -38,9 +39,6 @@ defmodule ShopifyEx.ApiHelper do
       else
         []
       end
-
-    # TODO: Need define the configuration to configure log request, and timeout
-    extended_middlewares = [Tesla.Middleware.Logger | extended_middlewares]
 
     domain = Keyword.get(opts, :domain)
 
