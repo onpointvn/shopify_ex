@@ -26,7 +26,7 @@ defmodule ShopifyEx.MixProject do
       {:hackney, "~> 1.17"},
 
       # Params Validator
-      {:tarams, "~> 1.2"},
+      {:tarams, github: "onpointvn/tarams", tag: "v0.5.3"},
 
       # UUID Generator
       {:elixir_uuid, "~> 1.2"},

@@ -35,8 +35,6 @@ defmodule ShopifyEx.Order.CreateFulfillmentAction do
     with {:ok, request_params} <- Tarams.cast(params, @schema) do
       request_params = ShopifyEx.MapHelper.clean_nil(request_params)
 
-      IO.inspect(request_params)
-
       client
       |> ShopifyEx.ApiHelper.post(
         "/orders/#{order_id}/fulfillments.json",
