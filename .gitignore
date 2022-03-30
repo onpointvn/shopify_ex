@@ -24,3 +24,9 @@ shopify_ex-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# ElixirLS
+.elixir_ls
+
+# Dependencies lock
+mix.lock

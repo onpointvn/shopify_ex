@@ -6,6 +6,7 @@ defmodule ShopifyEx.Order.RetrieveOrdersAction do
 
   https://shopify.dev/api/admin-rest/2022-01/resources/order#get-orders
   """
+  alias ShopifyEx.ApiHelper
   alias ShopifyEx.Constant
   alias ShopifyEx.MapHelper
 
@@ -27,27 +28,29 @@ defmodule ShopifyEx.Order.RetrieveOrdersAction do
     since_id: :integer,
     status: [type: :string, in: @statuses],
     updated_at_max: :utc_datetime,
-    updated_at_min: :utc_datetime
+    updated_at_min: :utc_datetime,
+    page_info: :string,
+    order: [type: :string, format: ~r/([[A-Z]|[a-z]|[0-9]|_)+ ((asc)|(desc))+/]
   }
   def perform(client, params \\ %{}) do
-    with {:ok, request_params} <- Tarams.cast(params, @schema) do
-      request_params =
-        request_params
-        |> MapHelper.clean_nil()
-        |> MapHelper.to_get_request_query()
+    with {:ok, request_params} <- Tarams.cast(params, @schema),
+         request_params <- build_request_params(request_params),
+         {:ok, %{status: 200, body: %{"orders" => orders}} = env} <-
+           ApiHelper.get(client, "/orders.json", query: request_params) do
+      page_info = ApiHelper.extract_page_info(env)
+      {:ok, %{orders: orders, page_info: page_info}}
+    else
+      {:ok, %{body: body}} ->
+        {:error, body}
 
-      client
-      |> ShopifyEx.ApiHelper.get("/orders.json", query: request_params)
-      |> case do
-        {:ok, %{status: 200, body: %{"orders" => orders}}} ->
-          {:ok, orders}
-
-        {:ok, %{body: body}} ->
-          {:error, body}
-
-        _error ->
-          {:error, "Something went wrong"}
-      end
+      _error ->
+        {:error, "Something went wrong"}
     end
+  end
+
+  defp build_request_params(params) do
+    params
+    |> MapHelper.clean_nil()
+    |> MapHelper.to_get_request_query()
   end
 end
